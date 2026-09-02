@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Download the Genesis Finance App</title>
+  <title>Genesis Finance</title>
 
   <!-- ============================================================= -->
   <!--  EDIT ONLY THE 4 VALUES INSIDE THE <script> AT THE BOTTOM.     -->
@@ -12,14 +12,28 @@
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
+
+    /* Page starts as a plain BLACK screen with nothing on it.        */
+    /* On phones the redirect fires instantly, so a scanner only ever  */
+    /* sees clean black behind the "Open in App Store?" popup.         */
+    html, body {
       min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
+      background: #000000;
+    }
+
+    /* The desktop landing UI stays hidden until we confirm the        */
+    /* visitor is NOT on a phone (see script at the bottom).           */
+    #desktopCard { display: none; }
+
+    body.show-desktop {
       background: radial-gradient(circle at 30% 80%, #2a2016 0%, #0a0a0a 60%);
+      display: flex; align-items: center; justify-content: center;
       font-family: 'Helvetica Neue', 'Segoe UI', system-ui, -apple-system, sans-serif;
       color: #f5f5f5; padding: 24px; text-align: center;
     }
-    .card { width: 100%; max-width: 440px; }
+    body.show-desktop #desktopCard { display: block; }
+
+    #desktopCard { width: 100%; max-width: 440px; }
     .genesis { font-size: 34px; letter-spacing: 10px; font-weight: 300; }
     .finance { font-size: 16px; letter-spacing: 8px; font-weight: 400; margin-top: 4px; }
     .rule { width: 90px; height: 2px; background: #b08a5e; margin: 22px auto; }
@@ -32,25 +46,24 @@
       font-size: 15px; letter-spacing: 1px;
     }
     a.btn:hover { background: rgba(176,138,94,0.15); }
-    .footnote { font-size: 12px; color: #777; margin-top: 24px; font-style: italic; }
   </style>
 </head>
 
 <body>
-  <div class="card">
+  <!-- Desktop-only content. Phones never see this (they redirect first). -->
+  <div id="desktopCard">
     <div class="genesis">GENESIS</div>
     <div class="finance">FINANCE</div>
     <div class="rule"></div>
     <h1>Manage your payments anytime.</h1>
-    <p class="sub" id="statusText">Opening your app store&hellip;</p>
-
-    <!-- Shown only on desktop / if auto-redirect doesn't fire -->
-    <div class="buttons" id="manualButtons" style="display:none;">
+    <p class="sub">
+      The Genesis Finance app is available on iOS and Android.
+      Open this page on your phone, or choose a store below.
+    </p>
+    <div class="buttons">
       <a class="btn" id="iosLink" href="#">Download on the App Store</a>
       <a class="btn" id="androidLink" href="#">Get it on Google Play</a>
     </div>
-
-    <p class="footnote">On a phone? This page opens the correct store automatically.</p>
   </div>
 
   <script>
@@ -59,10 +72,10 @@
     // ============================================================
     var APP_CONFIG = {
       // iOS: replace the id number (keep the "id" prefix)
-      iosAppStoreUrl:      "https://apps.apple.com/us/app/genesis-finance/id6748625044",
+      iosAppStoreUrl:      "https://apps.apple.com/us/app/genesis-finance/id0000000000",
 
       // Android: replace with your app's package name
-      androidPlayStoreUrl: "https://play.google.com/store/apps/details?id=com.genesisfinanceusa.mapp",
+      androidPlayStoreUrl: "https://play.google.com/store/apps/details?id=com.genesis.finance",
 
       // Where desktop visitors go if they click nothing (your main site)
       desktopFallbackUrl:  "https://www.genesisfinance.com"
@@ -73,24 +86,19 @@
 
     (function () {
       var ua = (navigator.userAgent || navigator.vendor || "").toLowerCase();
-
-      // Populate the manual fallback buttons regardless
-      document.getElementById("iosLink").href = APP_CONFIG.iosAppStoreUrl;
-      document.getElementById("androidLink").href = APP_CONFIG.androidPlayStoreUrl;
-
       var isIOS = /iphone|ipad|ipod/.test(ua);
       var isAndroid = /android/.test(ua) && !/windows phone/.test(ua);
 
       if (isIOS) {
+        // Redirect immediately. Page stays plain black behind the OS popup.
         window.location.replace(APP_CONFIG.iosAppStoreUrl);
       } else if (isAndroid) {
         window.location.replace(APP_CONFIG.androidPlayStoreUrl);
       } else {
-        // Desktop / unknown: show store buttons instead of a bare redirect
-        document.getElementById("statusText").textContent =
-          "The Genesis Finance app is available on iOS and Android. " +
-          "Open this page on your phone, or choose a store below.";
-        document.getElementById("manualButtons").style.display = "flex";
+        // Desktop / unknown: reveal the branded landing page + store buttons.
+        document.getElementById("iosLink").href = APP_CONFIG.iosAppStoreUrl;
+        document.getElementById("androidLink").href = APP_CONFIG.androidPlayStoreUrl;
+        document.body.className = "show-desktop";
       }
     })();
   </script>
