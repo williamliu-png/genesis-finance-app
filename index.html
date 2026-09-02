@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download the Genesis Finance App</title>
+
+  <!-- ============================================================= -->
+  <!--  EDIT ONLY THE 4 VALUES INSIDE THE <script> AT THE BOTTOM.     -->
+  <!--  Everything else works automatically.                          -->
+  <!-- ============================================================= -->
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 30% 80%, #2a2016 0%, #0a0a0a 60%);
+      font-family: 'Helvetica Neue', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: #f5f5f5; padding: 24px; text-align: center;
+    }
+    .card { width: 100%; max-width: 440px; }
+    .genesis { font-size: 34px; letter-spacing: 10px; font-weight: 300; }
+    .finance { font-size: 16px; letter-spacing: 8px; font-weight: 400; margin-top: 4px; }
+    .rule { width: 90px; height: 2px; background: #b08a5e; margin: 22px auto; }
+    h1 { font-size: 24px; font-weight: 300; margin-bottom: 12px; }
+    p.sub { font-size: 15px; line-height: 1.55; color: #a5a5a5; margin-bottom: 28px; }
+    .buttons { display: flex; flex-direction: column; gap: 12px; }
+    a.btn {
+      display: block; padding: 14px 20px; border-radius: 10px;
+      border: 1px solid #b08a5e; color: #f5f5f5; text-decoration: none;
+      font-size: 15px; letter-spacing: 1px;
+    }
+    a.btn:hover { background: rgba(176,138,94,0.15); }
+    .footnote { font-size: 12px; color: #777; margin-top: 24px; font-style: italic; }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="genesis">GENESIS</div>
+    <div class="finance">FINANCE</div>
+    <div class="rule"></div>
+    <h1>Manage your payments anytime.</h1>
+    <p class="sub" id="statusText">Opening your app store&hellip;</p>
+
+    <!-- Shown only on desktop / if auto-redirect doesn't fire -->
+    <div class="buttons" id="manualButtons" style="display:none;">
+      <a class="btn" id="iosLink" href="#">Download on the App Store</a>
+      <a class="btn" id="androidLink" href="#">Get it on Google Play</a>
+    </div>
+
+    <p class="footnote">On a phone? This page opens the correct store automatically.</p>
+  </div>
+
+  <script>
+    // ============================================================
+    //  ⬇⬇⬇  EDIT THESE 4 VALUES  ⬇⬇⬇
+    // ============================================================
+    var APP_CONFIG = {
+      // iOS: replace the id number (keep the "id" prefix)
+      iosAppStoreUrl:      "https://apps.apple.com/us/app/genesis-finance/id6748625044",
+
+      // Android: replace with your app's package name
+      androidPlayStoreUrl: "https://play.google.com/store/apps/details?id=com.genesisfinanceusa.mapp",
+
+      // Where desktop visitors go if they click nothing (your main site)
+      desktopFallbackUrl:  "https://www.genesisfinance.com"
+    };
+    // ============================================================
+    //  ⬆⬆⬆  DON'T EDIT ANYTHING BELOW THIS LINE  ⬆⬆⬆
+    // ============================================================
+
+    (function () {
+      var ua = (navigator.userAgent || navigator.vendor || "").toLowerCase();
+
+      // Populate the manual fallback buttons regardless
+      document.getElementById("iosLink").href = APP_CONFIG.iosAppStoreUrl;
+      document.getElementById("androidLink").href = APP_CONFIG.androidPlayStoreUrl;
+
+      var isIOS = /iphone|ipad|ipod/.test(ua);
+      var isAndroid = /android/.test(ua) && !/windows phone/.test(ua);
+
+      if (isIOS) {
+        window.location.replace(APP_CONFIG.iosAppStoreUrl);
+      } else if (isAndroid) {
+        window.location.replace(APP_CONFIG.androidPlayStoreUrl);
+      } else {
+        // Desktop / unknown: show store buttons instead of a bare redirect
+        document.getElementById("statusText").textContent =
+          "The Genesis Finance app is available on iOS and Android. " +
+          "Open this page on your phone, or choose a store below.";
+        document.getElementById("manualButtons").style.display = "flex";
+      }
+    })();
+  </script>
+</body>
+</html>
